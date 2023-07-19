@@ -34,9 +34,10 @@ def get_data():
         predicted_class_index = int(value.item())
         y_train_probs[index][predicted_class_index] = 1
     
+    from sklearn.model_selection import train_test_split
+    x_train, y_train_probs, x_val, y_val_probs = train_test_split(x_train, y_train_probs, test_size=0.1, random_state=42)
     
-    
-    return x_train,y_train,y_train_probs, x_test
+    return x_train, y_train_probs, x_val, y_val_probs, x_test
 
     
 #%%
@@ -86,7 +87,7 @@ def get_model():
 
     return model
 #%%
-x_train,y_train,y_train_probs, x_test = get_data()
+x_train, y_train_probs, x_val, y_val_probs, x_test = get_data()
 
 model = get_model()
 
@@ -98,9 +99,6 @@ model.compile(
 x_train, y_train_probs
 
 #%%
-np.random.seed(0)
-from sklearn.model_selection import train_test_split
-x_train_final, x_val_final, y_train_probs_final, y_val_probs_final = train_test_split(x_train, y_train_probs, test_size=0.1, random_state=42)
 
 model.fit(x_train_final,y_train_probs_final, epochs = 10, batch_size=64)
 score = model.evaluate(x_val_final,y_val_probs_final, verbose=1)

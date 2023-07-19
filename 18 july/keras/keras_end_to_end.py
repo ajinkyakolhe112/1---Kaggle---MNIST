@@ -49,11 +49,18 @@ kwargs = {
 	"activation": "relu",
 	"use_bias": False
 }
+0,0,1,0.6,0
+0,0,1,0,0
+0,0,1,0,0
+0,0,1,0,0
+0,0,1,0,0
 
+torch.tensor(5, keep_grads=True)
+[1*28*28*1]
 feature_extractor = tf.keras.models.Sequential([
-	layers.Conv2D(32,8, name = "conv1", input_shape = (28,28,1), data_format="channels_last"),
+	layers.Conv2D(filters = 32,kernel_size = 8, name = "conv1", input_shape = (28,28,1), data_format="channels_last"), # W = (8*8*1) o = (X*W)
 	layers.Activation("relu"),
-	layers.Conv2D(32,8, name = "conv2"),
+	layers.Conv2D(32,8, name = "conv2"), # o = (X*W1)*W2
 	layers.Activation("relu"),
 	layers.Conv2D(32,8, name = "conv3"),
 	layers.Activation("relu"),
