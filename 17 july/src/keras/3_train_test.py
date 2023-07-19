@@ -65,5 +65,7 @@ model.compile(
     metrics = ['accuracy']
 )
 
+model.summary(expand_nested=True,show_trainable=True)
+#%%
 
 model.fit(x_train,y_train_probs, epochs = 10)
