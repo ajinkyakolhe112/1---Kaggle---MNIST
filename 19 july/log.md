@@ -29,7 +29,8 @@ even in a low level framework, you can simplify the common repeated codes as lib
 
 with pytorch lightning, pytorch code is as easy as keras. also control over forward loop. can get details during each step. 
 
-doing, mnist & cifar at same time. also learn cnn-explainer. combined with keras & pytorch
+- [ ] doing, mnist & cifar at same time. also learn cnn-explainer. combined with keras & pytorch
+- [ ] alexnet size but for 10 categories like cifar. This will allow to do good experiments & understanding of real life data
 ----
 
 Code Design Questions
