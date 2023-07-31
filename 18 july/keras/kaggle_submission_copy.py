@@ -106,8 +106,8 @@ val_loss,val_accuracy = score[0], score[1]
 logger.info(f'loss= {val_loss}, accuracy = {val_accuracy}')
 
 #%%
-predicted_classes = model.predict(x_test)
-predicted_classes = np.argmax(predicted_classes, axis=1)
+predicted_classes_probs = model.predict(x_test)
+predicted_classes = np.argmax(predicted_classes_probs, axis=1)
 submissions=pd.DataFrame({"ImageId": list(range(1,len(predicted_classes)+1)),
                          "Label": predicted_classes})
 submissions.to_csv("kaggle-first-submission.csv", index=False, header=True)

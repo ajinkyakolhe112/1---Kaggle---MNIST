@@ -23,7 +23,8 @@ same audio doesn't cancel out. (not a feature built in brain)
 keras, easier to build nn. & iterate on it. just num of neurons for layer. **faster iteration, changing neuron configuration in multiple layers, needs change only at 1 place**
 keras also needed because of tf javascript
 pytorch. in_channels & out_channels for layer. need to always change two numbers. iterations have one more step change. but in keras, you can change number easily. 
-so iterate on keras and then move to pytorch. 
+so iterate on keras and then move to pytorch. could use hacky way to do same in pytorch, but won't look good
+
 - in keras, lots of things are happening in the background. batch = 32. what is loss function, what is optimizer. what is actually happening. hence we need to move to pytorch, which is a low level framework.
 even in a low level framework, you can simplify the common repeated codes as library, pytorch lightning, torchsummary, torchinfo
 

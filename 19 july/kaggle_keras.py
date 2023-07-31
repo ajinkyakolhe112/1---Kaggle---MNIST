@@ -81,10 +81,11 @@ logger.debug(keras_model.summary())
 logger.info(f'TODO: train test split')
 # pandas & numpy aren't made for train test split. they are made to just manage numeric arrays in python
 
-from sklearn.model_selection import train_test_split     # easiest to use
+# from sklearn.model_selection import train_test_split     # easiest to use
 # from torch.utils.data import random_split                # works as expected
 # from tensorflow.data.Dataset import random_split         # deprecated, doc says use random
 # from tensorflow.data.Dataset import random               # complex to use. couldn't figure out
+from sklearn.model_selection import train_test_split
 
 x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.1)
 

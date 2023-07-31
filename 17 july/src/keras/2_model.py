@@ -82,7 +82,7 @@ def clean_code(train_data, model):
         decision_maker
     ])
 
-    model.fit(x_train,y_train)
+    # model.fit(x_train,y_train)
 
 
 #%%
