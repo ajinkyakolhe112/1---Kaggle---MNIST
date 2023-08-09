@@ -24,6 +24,7 @@ def get_training_dataset():
     X,y = X.to_numpy(), y.to_numpy()
 
     X = X.reshape(-1,28,28,1) # B,H,W,C Channels Last
+    X = X/255.0
     Y = np.zeros(shape=(len(y),10))
     i = 0
     for element in y:
@@ -38,7 +39,7 @@ import torch
 
 def get_dataloaders():
     X,Y = get_training_dataset()
-    X,Y = torch.tensor(X),torch.tensor(Y)
+    X,Y = torch.tensor(X,dtype=torch.float32),torch.tensor(Y,dtype=torch.float32)
 
     training_dataset = torch.utils.data.TensorDataset(X,Y)
     training_dataset, validation_dataset = torch.utils.data.random_split(training_dataset, [0.9, 0.1])
