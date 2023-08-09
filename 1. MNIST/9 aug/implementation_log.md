@@ -17,5 +17,8 @@ Data
 
 **Parametric Experiment**
 1. Input -> Dense(**13**) -> Dense(10) -> Output
-2. 13 neurons. max: 75% accuracy. still more than 50% accuracy.
-- [ ] find network which just starts learning. reduce 13 neurons to something 
+2. 15 neurons. max: 75% accuracy. still more than 50% accuracy.
+
+Experiment: 11 neurons
+Observation
+1. still accuracy 70+ percent
