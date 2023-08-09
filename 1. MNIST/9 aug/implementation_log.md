@@ -8,7 +8,7 @@ Data
 
 **Steps to Complete**  
 - [x] Data in csv -> 
-- [x] Data in Dataloader ready to be trained
+- [x] Data in Dataloader ready to be trained -> not increamental coding, and 1 logical error , np matrix didn't visualize properly for one hot encoding
 - [ ] Model Architecture
 - [ ] Model Training
 - [ ] Model Monitoring
