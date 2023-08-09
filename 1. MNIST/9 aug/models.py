@@ -5,6 +5,7 @@ import pytorch_lightning
 class Baseline(torch.nn.Module):
     def __init__(self):
         super().__init__()
+        self.neuron = nn.Linear(10,1)
 
     def forward(self, X):
         return X
@@ -18,7 +19,8 @@ class Extended(pytorch_lightning.LightningModule):
     def forward(self, X):
         return self.model(X)
 
-    def train_step(self, X, Y):
+    def training_step(self, batch_XY, batch_no):
+        X, Y = batch_XY
         optimizer = self.optimizers()
         
         Y_predicted = self.model(X)
@@ -28,4 +30,12 @@ class Extended(pytorch_lightning.LightningModule):
         optimizer.zero_grad()
 
     def configure_optimizers(self):
-        torch.optim.Adam(self.model.parameters(), lr = 0.001)
+        W_PARAMETERS = self.model.parameters()
+        optimizer = torch.optim.Adam(W_PARAMETERS , lr = 0.001)
+        return optimizer
+
+def get_model():
+    model = Baseline()
+    extended = Extended(model)
+
+    return extended
