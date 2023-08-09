@@ -46,3 +46,14 @@ def get_model():
     extended = Extended(model)
 
     return extended
+
+def test_training():
+    from dataloader import get_training_dataset, get_final_test_dataset, get_dataloaders
+    train_loader, val_loader = get_dataloaders()
+
+    model = get_model()
+    
+    import pytorch_lightning
+    trainer = pytorch_lightning.Trainer(enable_progress_bar = True , max_epochs=5)
+    trainer.fit(model, train_loader)
+    
