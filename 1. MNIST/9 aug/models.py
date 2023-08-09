@@ -7,17 +7,25 @@ class Baseline(torch.nn.Module):
         super().__init__()
 
     def forward(self, X):
-        pass
+        return X
 
 class Extended(pytorch_lightning.LightningModule):
-    def __init__(self):
+    def __init__(self, init_model: torch.nn.Module):
         super().__init__()
+        self.automatic_optimization = False
+        self.model = init_model
     
     def forward(self, X):
-        pass
+        return self.model(X)
 
-    def train_step():
-        pass
+    def train_step(self, X, Y):
+        optimizer = self.optimizers()
+        
+        Y_predicted = self.model(X)
+        loss        = nn.functional.cross_entropy(Y_predicted, Y)
+        self.manual_backward(loss)
+        optimizer.step()
+        optimizer.zero_grad()
 
-    def validation_step():
-        pass
+    def configure_optimizers(self):
+        torch.optim.Adam(self.model.parameters(), lr = 0.001)
