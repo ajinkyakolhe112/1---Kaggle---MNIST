@@ -9,8 +9,13 @@ Data
 **Steps to Complete**  
 - [x] Data in csv -> 
 - [x] Data in Dataloader ready to be trained -> not increamental coding, and 1 logical error , np matrix didn't visualize properly for one hot encoding
-- [ ] Model Architecture
-- [ ] Model Training
-- [ ] Model Monitoring
+- [x] Model Architecture - Simple architecture
+- [x] Model Training - pytorch lightning makes it easier
+- [x] Model Monitoring - 
 - [ ] Model Prediction
 - [ ] Submission
+
+**Parametric Experiment**
+1. Input -> Dense(**13**) -> Dense(10) -> Output
+2. 13 neurons. max: 75% accuracy. still more than 50% accuracy.
+- [ ] find network which just starts learning. reduce 13 neurons to something 

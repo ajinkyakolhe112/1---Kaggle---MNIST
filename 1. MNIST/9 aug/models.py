@@ -3,12 +3,13 @@ import torch.nn as nn
 import pytorch_lightning
 import torchmetrics
 
+Universal_Apprioximate_Function = 11
 class Baseline(torch.nn.Module):
     def __init__(self):
         super().__init__()
         # Reshape in forward here
-        self.layer_1 = nn.Linear(28*28,15)
-        self.class_predictor = nn.Linear(15, 10)
+        self.layer_1 = nn.Linear(28*28,Universal_Apprioximate_Function)
+        self.class_predictor = nn.Linear(Universal_Apprioximate_Function, 10)
 
     def forward(self, X):
         X = X.view(-1,28*28)
@@ -46,9 +47,21 @@ class Extended(pytorch_lightning.LightningModule):
         Y_predicted_labels  = torch.argmax(Y_predicted_probs, dim = 1, keepdim = True )
         Y_actual_labels     = torch.argmax(Y, dim = 1, keepdim = True)
         accuracy = self.train_acc(Y_predicted_labels,Y_actual_labels)
-        self.log("accuracy",accuracy , on_step=True, prog_bar=True)
+        self.log("train accuracy",accuracy , on_step=True, prog_bar=True)
+        tensorboard = self.logger.experiment
+
         optimizer.zero_grad()
 
+    def validation_step(self, batch_XY, batch_no):
+        X, Y = batch_XY
+        Y_predicted_probs = self.pytorch_model(X)
+        loss = nn.functional.cross_entropy(Y_predicted_probs, Y)
+        self.log("validation loss",loss.item(), prog_bar=True)
+
+        Y_predicted_labels  = torch.argmax(Y_predicted_probs, dim = 1, keepdim = True )
+        Y_actual_labels     = torch.argmax(Y, dim = 1, keepdim = True)
+        accuracy = self.train_acc(Y_predicted_labels,Y_actual_labels)
+        self.log("validation accuracy",accuracy , prog_bar=True)
 
     def configure_optimizers(self):
         W_PARAMETERS = self.pytorch_model.parameters()
@@ -63,13 +76,16 @@ def get_model():
 
 def test_training():
     from dataloader import get_training_dataset, get_final_test_dataset, get_dataloaders
-    train_loader, val_loader = get_dataloaders()
+    import pytorch_lightning
+    from pytorch_lightning.loggers import TensorBoardLogger
 
+    train_loader, val_loader = get_dataloaders()
     model = get_model()
 
-    import pytorch_lightning
-    trainer = pytorch_lightning.Trainer(enable_progress_bar = True , max_epochs=5)
-    trainer.fit(model, train_loader)
+    logger = TensorBoardLogger(save_dir="lightning_logs", name="overfitting_point", version="v2/11_neurons")
+
+    trainer = pytorch_lightning.Trainer(enable_progress_bar = True , max_epochs=15, logger=logger)
+    trainer.fit(model, train_loader, val_loader)
 
 if __name__=="__main__":
     test_training()
