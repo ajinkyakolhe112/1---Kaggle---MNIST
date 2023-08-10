@@ -3,20 +3,20 @@ import torch.nn as nn
 import pytorch_lightning
 import torchmetrics
 
-Universal_Apprioximate_Function = 11
+Universal_Apprioximate_Function = 49
 class Baseline(torch.nn.Module):
     def __init__(self):
         super().__init__()
         # Reshape in forward here
-        self.layer_1 = nn.Linear(28*28,Universal_Apprioximate_Function)
+        self.layer_1         = nn.Linear(28*28,Universal_Apprioximate_Function)
         self.class_predictor = nn.Linear(Universal_Apprioximate_Function, 10)
 
     def forward(self, X):
-        X = X.view(-1,28*28)
+        X      = X.view(-1,28*28)
         output = self.layer_1(X)
         output = nn.functional.relu(output)
 
-        output = self.class_predictor(output)
+        output       = self.class_predictor(output)
         output_probs = nn.functional.softmax(output, dim=1)
         output_class = torch.argmax(output_probs, dim=1)
 
@@ -82,9 +82,9 @@ def test_training():
     train_loader, val_loader = get_dataloaders()
     model = get_model()
 
-    logger = TensorBoardLogger(save_dir="lightning_logs", name="overfitting_point", version="v2/11_neurons")
+    logger = TensorBoardLogger(save_dir="lightning_logs", name="finding_overfitting_point", version="v2_"+str(Universal_Apprioximate_Function))
 
-    trainer = pytorch_lightning.Trainer(enable_progress_bar = True , max_epochs=15, logger=logger)
+    trainer = pytorch_lightning.Trainer(enable_progress_bar = True , max_epochs=10, logger=logger)
     trainer.fit(model, train_loader, val_loader)
 
 if __name__=="__main__":

@@ -32,6 +32,11 @@ def get_training_dataset():
         i = i+1
 
     logger.debug(f'X & Y shape = {X.shape}{Y.shape}')
+
+    np.random.seed(5)
+    indexes = np.random.choice(len(X),int(len(X)/2))
+    X,Y = X[indexes],Y[indexes]
+
     return X,Y
 
 #%%
