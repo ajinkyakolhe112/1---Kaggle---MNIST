@@ -4,10 +4,10 @@
 - seperate file with cli configuration & yaml
 - [x] `1_datasets.py`
   - train.csv & test.csv. -> pandas -> numpy ndarray -> pytorch tensor -> pytorch tensordataset
-- `2_dataloaders.py`
-- `3_pytorch_models/`
-- `4_lightning_module.py`
-- `5_trainer.py`
+- [x] `2_dataloaders.py`
+- [x] `3_pytorch_models/`
+- [x] `4_lightning_module.py`
+- [x] `5_trainer.py`
 - `6_hooks_monitoring/`
 - `7_configs.yaml`
 - `8_script_cli.py`
