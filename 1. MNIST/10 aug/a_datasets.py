@@ -16,11 +16,11 @@ def get_datasets():
     X = train_df
 
     X,y = X.to_numpy(), y.to_numpy()
-    X,y = torch.tensor(X, dtype=torch.float32, requires_grad=False), torch.tensor(y, dtype=torch.int64, requires_grad=False)
+    X,y = torch.tensor(X, dtype=torch.float32, requires_grad=False), torch.tensor(y, dtype=torch.float32, requires_grad=False)
     
     X = X.reshape(-1,28,28,1)
-    Y = torch.nn.functional.one_hot(y, 10) # one hot expects, datatype of y to be torch.int64.
-    Y = torch.tensor(Y, dtype=torch.float32) 
+    Y = torch.nn.functional.one_hot(y.to(torch.int64), 10) # one hot expects, datatype of y to be torch.int64.
+    # Y = torch.tensor(Y, dtype=torch.float32) 
 
     test_data_X = test_df.to_numpy()
     test_data_X = torch.tensor(test_data_X, dtype=torch.float32, requires_grad=False)

@@ -2,7 +2,10 @@ import torch
 
 from loguru import logger
 
-def get_dataloaders(train_data, test_data):
+def get_dataloaders(train_data=None, test_data=None):
+    if train_data is None and test_data is None:
+        from a_datasets import get_datasets
+        train_data, test_data = get_datasets()
     
     train_data, val_data = torch.utils.data.random_split(train_data, [0.9, 0.1])
 
