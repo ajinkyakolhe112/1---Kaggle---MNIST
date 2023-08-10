@@ -30,6 +30,8 @@ def get_datasets():
 
     logger.debug(f'X_train[0] = {train_data[0][0].shape}, Y_train[0] = {train_data[0][1].shape}')
     logger.debug(f'X_test[0] = {test_data[0][0].shape}')
+
+    return train_data, test_data
     pass
 
 get_datasets()
