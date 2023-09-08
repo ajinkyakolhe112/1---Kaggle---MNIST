@@ -1,0 +1,67 @@
+import pytorch_lightning
+import torch
+import torchmetrics
+import os
+
+
+
+from loguru import logger
+
+class Extended(pytorch_lightning.LightningModule):
+    def __init__(self, pytorch_model: torch.nn.Module):
+        super().__init__()
+        self.model = pytorch_model
+        self.automatic_optimization= False
+        
+        self.accuracy = torchmetrics.classification.Accuracy(task="multiclass", num_classes=10)
+
+    def forward(self, X):
+        self.model(X)
+
+    def training_step(self, batch_XY, batch_no):
+        X,Y       = batch_XY
+        optimizer = self.optimizers()
+        
+        # 1. y_predicted = f(X, W)
+        Y_predicted = self.model(X)
+        
+        # 2. loss = error_function(y_predicted, y_actual)
+        loss        = torch.nn.functional.cross_entropy(Y_predicted, Y)
+        
+        # 3. dE/dW. Minimize E by gradient based minimization
+        self.manual_backward(loss)
+        
+        # 4. W = W - dE/dW * learning_rate
+        optimizer.step()
+        
+        # 5. Clean Up dE/dW at each neuron.
+        optimizer.zero_grad()
+        
+        self.log("loss",loss.item())
+        self.accuracy(Y_predicted,Y)
+        self.log('train_acc_step', self.accuracy)
+
+    def validation_step(self, batch_XY, batch_no):
+        X,Y       = batch_XY
+        Y_predicted = self.model(X)
+        loss        = torch.nn.functional.cross_entropy(Y_predicted, Y)
+
+    def configure_optimizers(self):
+        return torch.optim.SGD(params = self.model.parameters(), lr= 0.001)
+
+
+def test_lightning_module():
+    from a_dataset import get_datasets
+    from b_dataloader import get_dataloaders
+    from c_model import Baseline_NN
+    
+    train_data, test_data = get_datasets()
+    train_loader, val_loader, test_loader = get_dataloaders(train_data, test_data)
+    model = Baseline_NN()
+    lightning_module                        = Extended(model) 
+    trainer_module = pytorch_lightning.Trainer(max_epochs = 5)
+    trainer_module.fit( lightning_module, train_loader, val_loader  )
+
+    logger.debug(f'')
+
+
