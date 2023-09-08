@@ -1,13 +1,11 @@
-import pytorch_lightning
 import torch
+import pytorch_lightning
 import torchmetrics
 import os
 
-
-
 from loguru import logger
 
-class Extended(pytorch_lightning.LightningModule):
+class NN_Training_Loop(pytorch_lightning.LightningModule):
     def __init__(self, pytorch_model: torch.nn.Module):
         super().__init__()
         self.model = pytorch_model
@@ -36,10 +34,10 @@ class Extended(pytorch_lightning.LightningModule):
         
         # 5. Clean Up dE/dW at each neuron.
         optimizer.zero_grad()
-        
-        self.log("loss",loss.item())
+
+        self.log("loss",loss.item(), prog_bar=True)
         self.accuracy(Y_predicted,Y)
-        self.log('train_acc_step', self.accuracy)
+        self.log('train_acc_step', self.accuracy, prog_bar=True)
 
     def validation_step(self, batch_XY, batch_no):
         X,Y       = batch_XY
@@ -55,13 +53,13 @@ def test_lightning_module():
     from b_dataloader import get_dataloaders
     from c_model import Baseline_NN
     
-    train_data, test_data = get_datasets()
+    train_dataset, test_dataset = get_datasets()
     train_loader, val_loader, test_loader = get_dataloaders(train_data, test_data)
-    model = Baseline_NN()
-    lightning_module                        = Extended(model) 
-    trainer_module = pytorch_lightning.Trainer(max_epochs = 5)
+    
+    model               = Baseline_NN()
+    lightning_module    = NN_Training_Loop(model) 
+    
+    trainer_module      = pytorch_lightning.Trainer(max_epochs = 5)
     trainer_module.fit( lightning_module, train_loader, val_loader  )
-
-    logger.debug(f'')
 
 

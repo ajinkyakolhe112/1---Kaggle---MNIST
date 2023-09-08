@@ -12,8 +12,9 @@ from loguru import logger
 class Baseline_NN(torch.nn.Module):
     def __init__(self, ):
         super().__init__()
-        
-        nn_arch = [28*28, 5, 4, 10] # Architecture is hardcoded. Number of neurons can be changed
+
+        # Architecture is hardcoded. Number of neurons can be changed
+        nn_arch = [28*28, 5, 4, 10] 
         
         self.layer_1        = nn.Linear(in_features= nn_arch[0]  , out_features= nn_arch[1])  # hidden layer 1
         self.layer_2        = nn.Linear(in_features= nn_arch[1]  , out_features= nn_arch[2])  # hidden layer 2
@@ -22,10 +23,10 @@ class Baseline_NN(torch.nn.Module):
         self.relu    = nn.functional.relu
         self.softmax = torch.nn.functional.softmax
 
-    
     def forward(self, X_batch):
         X = X_batch
-        X = X.reshape(-1, 28*28)
+
+        X  = X.reshape(-1, 28*28)
         z1 = self.layer_1(X)
         a1 = self.relu(z1)
         
