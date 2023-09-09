@@ -36,7 +36,7 @@ class NN_Training_Loop(lightning.LightningModule):
         optimizer.zero_grad()
 
         self.log("loss",loss.item(), prog_bar=True)
-        self.accuracy(Y_predicted,Y)
+        batch_accuracy = self.accuracy(Y_predicted,Y)
         self.log('train_acc_step', self.accuracy, prog_bar=True)
 
     def validation_step(self, batch_XY, batch_no):
