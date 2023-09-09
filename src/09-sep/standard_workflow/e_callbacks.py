@@ -1,5 +1,5 @@
 import torch
-import pytorch_lightning
+import lightning.pytorch.callbacks.Callback
 
 class CustomCallback(Callback):
     def on_train_start(self, trainer, pl_module):

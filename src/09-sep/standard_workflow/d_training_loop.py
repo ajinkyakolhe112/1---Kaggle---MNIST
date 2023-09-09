@@ -1,11 +1,11 @@
 import torch
-import pytorch_lightning
+import lightning
 import torchmetrics
 import os
 
 from loguru import logger
 
-class NN_Training_Loop(pytorch_lightning.LightningModule):
+class NN_Training_Loop(lightning.LightningModule):
     def __init__(self, pytorch_model: torch.nn.Module):
         super().__init__()
         self.model = pytorch_model
@@ -24,7 +24,7 @@ class NN_Training_Loop(pytorch_lightning.LightningModule):
         Y_predicted = self.model(X)
         
         # 2. loss = error_function(y_predicted, y_actual)
-        loss        = torch.nn.functional.cross_entropy(Y_predicted, Y)
+        loss        = torch.nn.functional.cross_entropy(Y, Y_predicted)
         
         # 3. dE/dW. Minimize E by gradient based minimization
         self.manual_backward(loss)
@@ -42,10 +42,10 @@ class NN_Training_Loop(pytorch_lightning.LightningModule):
     def validation_step(self, batch_XY, batch_no):
         X,Y       = batch_XY
         Y_predicted = self.model(X)
-        loss        = torch.nn.functional.cross_entropy(Y_predicted, Y)
+        loss        = torch.nn.functional.cross_entropy(Y, Y_predicted)
 
     def configure_optimizers(self):
-        return torch.optim.SGD(params = self.model.parameters(), lr= 0.001)
+        return torch.optim.Adam(params = self.model.parameters(), lr= 0.01)
 
 
 def test_lightning_module():
@@ -54,12 +54,14 @@ def test_lightning_module():
     from c_model import Baseline_NN
     
     train_dataset, test_dataset = get_datasets()
-    train_loader, val_loader, test_loader = get_dataloaders(train_data, test_data)
+    train_loader, val_loader, test_loader = get_dataloaders(train_dataset, test_dataset)
     
     model               = Baseline_NN()
     lightning_module    = NN_Training_Loop(model) 
     
-    trainer_module      = pytorch_lightning.Trainer(max_epochs = 5)
+    trainer_module      = lightning.Trainer(max_epochs = 5)
     trainer_module.fit( lightning_module, train_loader, val_loader  )
 
 
+if __name__=="__main__":
+    test_lightning_module()

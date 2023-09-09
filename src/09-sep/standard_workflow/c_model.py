@@ -21,12 +21,14 @@ class Baseline_NN(torch.nn.Module):
         self.decision_maker = nn.Linear(in_features= nn_arch[2]  , out_features= nn_arch[3])  # output layer
         
         self.relu    = nn.functional.relu
-        self.softmax = torch.nn.functional.softmax
+        self.softmax = nn.functional.softmax
+        self.log_softmax = nn.functional.log_softmax
 
     def forward(self, X_batch):
-        X = X_batch
 
+        X  = X_batch
         X  = X.reshape(-1, 28*28)
+
         z1 = self.layer_1(X)
         a1 = self.relu(z1)
         
@@ -34,9 +36,10 @@ class Baseline_NN(torch.nn.Module):
         a2 = self.relu(z2)
 
         z3 = self.decision_maker(a2)
-        softmax_output  = self.softmax(z3, dim=1)
+        softmax_probs  = self.softmax(z3, dim=1)
+        log_softmax = self.log_softmax(z3, dim=1)
 
-        return softmax_output
+        return log_softmax
 
 def test_single_example():
     tmp_img = torch.randn(1,28,28,1)

@@ -1,10 +1,8 @@
 import torch
-
 from loguru import logger
 
 def get_dataloaders(train_dataset, test_dataset):
-    
-    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [0.9, 0.1])
+    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [0.7, 0.3])
 
     options_dict = {
         "batch_size": 32,
