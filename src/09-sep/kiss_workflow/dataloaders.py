@@ -38,7 +38,7 @@ print(f'X_test[0] = {test_dataset[0][0].shape}')
 train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [0.7, 0.3])
 
 options_dict = {
-	"batch_size": 5,
+	"batch_size": 7,
 	"shuffle": True,
 }
 train_data_loader = torch.utils.data.DataLoader(train_dataset, **options_dict)
