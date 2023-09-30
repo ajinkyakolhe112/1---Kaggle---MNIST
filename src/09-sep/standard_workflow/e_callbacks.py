@@ -1,14 +1,20 @@
 import torch
-import lightning.pytorch.callbacks.Callback
+from lightning.pytorch.callbacks import Callback
+
+import wandb
+from lightning.pytorch.loggers import WandbLogger
+
+wandb.login()
 
 class CustomCallback(Callback):
-    def on_train_start(self, trainer, pl_module):
-        print("Training is starting")
-        self.log()
-
-    def on_train_end(self, trainer, pl_module):
-        print("Training is ending")
-
-
-def get_trainer():
-    return trainer
+    def __init__(self, track_this="epochs", verbose=True):
+        self.track_this = track_this
+        self.verbose = verbose
+        self.state = {}
+    
+    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+        pass
+    def on_train_epoch_end(self, trainer, pl_module):
+        pass
+        
+        
