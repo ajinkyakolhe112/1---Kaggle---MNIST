@@ -4,3 +4,4 @@
 _pyache_/
 *./__pycache__/*
 19 july/experiments/__pycache__/utils.cpython-39.pyc
+lightning_logs
